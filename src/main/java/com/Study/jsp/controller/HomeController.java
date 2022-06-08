@@ -37,6 +37,7 @@ public class HomeController {
 		
 		actorList.add(a1);
 		actorList.add(a2);
+		
 		map.addAttribute("actorList", actorList);
 		
 		List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
