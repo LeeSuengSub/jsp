@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Study.jsp.VO.ActorVO;
 
@@ -54,7 +59,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("/board")
-	public String loadBoardPage(ModelMap map) {
+	public String loadBoardPage(ModelMap map, HttpSession httpSession) {
 		
 		Map<String, Object> data = new HashMap<String, Object>();
 		
@@ -81,6 +86,48 @@ public class HomeController {
 		data.put("list", list);
 		map.addAttribute("data", data);
 		
+		//세션데이터 가져오기
+		String userId = (String)httpSession.getAttribute("userId");
+		System.out.println("세션에서 가져온 데이터 "+ userId);
+		
+		//redirect : 재요청
+		if(userId == null) {
+			return "redirect:/login";
+		}
+		map.addAttribute("userNo",100);
+		map.addAttribute("userId",userId);
+		
 		return "board";
+	}
+	
+	@GetMapping("/")
+	public String loadMainPage() {
+		return "home";
+	}
+	
+	@GetMapping("/login")
+	public String loadLoginPage() {
+		return "login";
+	}
+	
+	@PostMapping("/login")
+	public @ResponseBody boolean callLogin(@RequestBody Map<String, Object> data, HttpSession httpSession) {
+		String userId = (String) data.get("userId");
+		String userPassword = (String) data.get("userPassword");
+		
+		System.out.println("아이디는 "+userId);
+		System.out.println("비밀번호는 "+userPassword);
+		
+		//세션에 데이터 SET
+		httpSession.setAttribute("userId", userId);
+		httpSession.setAttribute("userPassword", userPassword);//비밀번호는 세션에 넣으면 안됨.
+		
+		return true;
+	}
+	@GetMapping("/logout")
+	public String goLoginPage(HttpSession httpSession) {
+		httpSession.removeAttribute("userId");
+		httpSession.removeAttribute("userPassword");
+		return "login";
 	}
 }
