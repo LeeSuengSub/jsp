@@ -24,13 +24,13 @@
 	<!-- if else를구현하고 싶을 때 -->
 	<c:choose>
 		<c:when test="${size < 100}">
-		<h4>사이즈는 100미만입니다.</h4>
+			<h4>사이즈는 100미만입니다.</h4>
 		</c:when>
 		<c:when test="${size <200 && size>=100}">
-		<h4>사이즈는 200미만입니다.</h4>
+			<h4>사이즈는 200미만입니다.</h4>
 		</c:when>
 		<c:otherwise>
-		<h4>사이즈는 200이상입니다.</h4>
+			<h4>사이즈는 200이상입니다.</h4>
 		</c:otherwise>
 	</c:choose>
 	
